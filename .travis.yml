@@ -1,0 +1,37 @@
+language: generic
+
+os:
+  - osx
+  - linux
+
+env:
+  matrix:
+    - PYTHON=3.5
+
+branches:
+  only:
+    - master
+
+before_install:
+  # Operative system
+  - if [[ "$(uname)" == "Darwin" ]]; then wget http://repo.continuum.io/miniconda/Miniconda3-latest-MacOSX-x86_64.sh -O miniconda.sh; fi
+  - if [[ "$(uname)" == "Linux" ]]; then wget http://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh; fi
+  - bash miniconda.sh -b -p $HOME/miniconda
+  - export PATH="$HOME/miniconda/bin:$PATH"
+
+  # Install the build and runtime dependencies of the project
+  - conda config --set always_yes yes --set changeps1 no
+  - conda update -q conda
+  - conda install -q conda-build anaconda-client
+  - conda info -a
+
+  # Check that we have the expected version of Python
+  - python --version
+
+install:
+  - conda build -q buildscripts/condarecipes/cephes --python $PYTHON
+
+script:
+  - echo "XXX Test here XXX"
+
+sudo: false
