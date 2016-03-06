@@ -1,5 +1,5 @@
-nmake /f msvc.mak
+nmake /f msvcdll.mak
 
-copy fti.lib %LIBRARY_LIB%\md.lib
+copy libmd.dll %LIBRARY_LIB%
 
 if errorlevel 1 exit 1
